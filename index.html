@@ -1,1 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantle Research Agent</title>
 
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <span class="dot"></span>
+        <h2>Mantle Research Agent</h2>
+    </div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+    <h1>
+        Research <span>Mantle Network</span><br>
+        Like an Engineer
+    </h1>
+
+    <p>
+        Powered by Mantle AI Skills.
+        Explore Mantle's architecture, network, wallet activity,
+        GraphQL templates and SQL examples through a modern research interface.
+    </p>
+
+</section>
+
+
+<section class="terminal">
+
+    <div class="terminal-top">
+
+        <span class="circle red"></span>
+        <span class="circle yellow"></span>
+        <span class="circle green"></span>
+
+        <div class="terminal-title">
+            mantle-agent
+        </div>
+
+    </div>
+
+    <textarea
+        id="question"
+        placeholder="Ask anything about Mantle..."
+    ></textarea>
+
+    <button id="askBtn">
+
+        Run Query →
+
+    </button>
+
+</section>
+
+
+<section id="answer">
+
+    <h3>Response</h3>
+
+    <div id="response">
+
+        Ask a question to begin.
+
+    </div>
+
+</section>
+
+
+<section class="examples">
+
+<h3>Example Questions</h3>
+
+<div class="chips">
+
+<button class="chip">
+What token is used for gas on Mantle?
+</button>
+
+<button class="chip">
+What is Mantle's chain ID?
+</button>
+
+<button class="chip">
+Explain inclusion vs settlement.
+</button>
+
+<button class="chip">
+Generate GraphQL wallet query.
+</button>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+Built for the Mantle AI Skills Bounty
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
