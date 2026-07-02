@@ -311,4 +311,18 @@ footer {
     transform:scale(.8);
 }
 
+#chat-section{
+    margin-bottom: 50px;
+}
+
+.examples{
+    margin-top: 50px;
+}
+
+.examples h3{
+    margin-bottom: 20px;
+}
+
+#chat-window{
+    margin-bottom: 20px;
 }
