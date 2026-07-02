@@ -262,3 +262,53 @@ footer {
     padding:15px 28px;
     border-radius:10px;
 }
+/* ===== AI Thinking ===== */
+
+.hidden{
+    display:none;
+}
+
+#thinking{
+    margin-top:20px;
+    margin-bottom:20px;
+    padding:20px;
+    border:1px solid #23402c;
+    border-radius:12px;
+    background:#101710;
+}
+
+.thinking-step{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:#b8d4b8;
+    margin:12px 0;
+    font-size:15px;
+}
+
+.loader{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:#00d35f;
+    animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+
+0%{
+    opacity:.3;
+    transform:scale(.8);
+}
+
+50%{
+    opacity:1;
+    transform:scale(1.2);
+}
+
+100%{
+    opacity:.3;
+    transform:scale(.8);
+}
+
+}
