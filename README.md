@@ -1,4 +1,4 @@
-Mantle AI Research Studio
+**Mantle AI Research Studio**
 
 Live demo: https://nikkibear44.github.io/mantle-research-agent/
 
