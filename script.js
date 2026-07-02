@@ -3,7 +3,7 @@
 // Local Mantle AI Skills + Live Data + Claude AI
 // ===============================
 
-const PROXY_URL = 'https://hizqil-9aee426e760711f196e81607ee4eb77e.web.val.run';
+const PROXY_URL = 'https://hizqil--9aee426e760711f196e81607ee4eb77e.web.val.run';
 
 // ===============================
 // LIVE DATA
