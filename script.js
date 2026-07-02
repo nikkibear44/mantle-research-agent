@@ -68,7 +68,7 @@ const question = document.getElementById("question");
 const response = document.getElementById("response");
 const askBtn = document.getElementById("askBtn");
 
-askBtn.onclick = searchKnowledge;
+askBtn.onclick = runAI;
 
 document.querySelectorAll(".chip").forEach(chip=>{
 
@@ -82,9 +82,57 @@ searchKnowledge();
 
 });
 
+function runAI(){
+
+const thinking=document.getElementById("thinking");
+
+response.innerHTML="";
+
+thinking.classList.remove("hidden");
+
+askBtn.disabled=true;
+
+askBtn.innerHTML="Thinking...";
+
+setTimeout(()=>{
+
+thinking.classList.add("hidden");
+
+searchKnowledge();
+
+askBtn.disabled=false;
+
+askBtn.innerHTML="Run Query →";
+
+},2500);
+
+}
+
 function searchKnowledge(){
 
 const text=question.value.toLowerCase();
+
+for(const item of knowledgeBase){
+
+if(item.keywords.some(word=>text.includes(word))){
+
+response.innerHTML=item.answer;
+
+return;
+
+}
+
+}
+
+response.innerHTML=`
+<h2>No matching article</h2>
+
+<p>
+This topic hasn't been added yet.
+</p>
+`;
+
+}
 
 for(const item of knowledgeBase){
 
