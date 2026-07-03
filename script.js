@@ -112,7 +112,7 @@ const knowledgeBase = [
 `
   },
   {
-    keywords: ["graphql", "wallet"],
+    keywords: ["graphql query", "show graphql", "example graphql"],
     answer: () => `
 <h2>Example GraphQL Query</h2>
 <pre>{
