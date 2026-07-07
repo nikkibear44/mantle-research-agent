@@ -1,4 +1,4 @@
-**Mantle AI Research Studio**
+# Mantle AI Research Studio
 
 Live demo: https://nikkibear44.github.io/mantle-research-agent/
 
@@ -6,77 +6,107 @@ Repo: https://github.com/nikkibear44/mantle-research-agent
 
 Submitted for the Mantle Research Challenge — Track 2: The Research Agent
 
+---
 
-What it does
+## What it does
 
 Mantle AI Research Studio is a research assistant for developers, traders, and builders who need fast, accurate answers about Mantle Network — without digging through scattered documentation.
 
-Ask it things like:
+It combines three layers of intelligence:
 
+**1. Mantle AI Agent Skills (local knowledge base)**
+Instant answers to known Mantle questions, grounded in Mantle's official skill files (mantle-network-primer v0.1.18 + mantle-data-indexer v0.1.18). No API call needed, no hallucination risk.
 
-What token is used for gas on Mantle, and why?
-What is EigenDA and how does Mantle use it for data availability?
-How does the sequencer work?
-How do I bridge assets to Mantle?
-How does Mantle compare to Arbitrum or Optimism?
-Generate a GraphQL query for wallet activity
-Generate a SQL query for wallet activity
-How do I deploy a smart contract on Mantle?
+**2. Claude AI via secure proxy (unknown questions)**
+For anything outside the local knowledge base, the agent sends the question to Claude (claude-sonnet-4-6) via a secure Val Town proxy — with live Mantle data injected into the context so answers are current, not just generic.
 
+**3. Live onchain data (CoinGecko + DeFiLlama)**
+Every page load fetches:
+- MNT price (live, CoinGecko)
+- Mantle TVL (live, DeFiLlama)
+- Top protocol by TVL on Mantle (live, DeFiLlama)
 
-The interface mimics a modern AI chat experience — a "thinking" state followed by a typed-out answer — but the underlying knowledge is a curated, verified knowledge base rather than a live LLM call. That was a deliberate architecture decision, explained below.
+This live data is shown in the header bar and injected into Claude's context so it can answer questions like "what's Mantle's TVL right now?" with real numbers.
 
-Why it's useful
+---
 
-Generic AI chatbots often give vague or outdated answers about specific L2s like Mantle — mixing up chain IDs, gas tokens, or architecture details from other rollups. This tool is scoped narrowly and grounded specifically in verified Mantle facts, so the answers are accurate every time, not just plausible-sounding.
+## Example questions it can answer
 
-It's built for the moment a developer or researcher needs a quick, reliable answer instead of searching multiple doc pages.
+**From local knowledge base (instant):**
+- What token is used for gas on Mantle?
+- What is EigenDA and how does Mantle use it?
+- How does the sequencer work?
+- How do I bridge assets to Mantle?
+- How does Mantle compare to Arbitrum or Optimism?
+- Generate a GraphQL query for wallet activity
+- How do I deploy a smart contract on Mantle?
 
-How I built it
+**From Claude AI (live, open-ended):**
+- Where can I trade Mantle? *(returns live price + CEX/DEX breakdown)*
+- Can you track this wallet? 0x...
+- What is Fluxion on Mantle?
+- What projects are building RWA on Mantle?
+- What is ERC-8004?
+- What is the best DEX on Mantle right now?
 
+---
 
-Research phase: I used a Claude Project configured with Mantle's AI Agent Skills to research Mantle's architecture — gas token (MNT), Chain ID (5000), EigenDA for data availability, the sequencer/settlement flow, bridging, and common developer query patterns (GraphQL/SQL). The Skills grounded the research in Mantle's actual documentation rather than general web knowledge, which reduced the risk of inaccurate or hallucinated details.
-Curation phase: I converted the verified research into a structured knowledge base — a set of question-keyword-answer entries covering the topics above.
-Interface phase: I built a static frontend (HTML/CSS/JS) hosted on GitHub Pages that presents this knowledge base as an interactive research assistant, complete with a chat-style conversation view, a "thinking" animation, and clickable example questions.
+## Why it's useful
 
+Generic AI chatbots often give vague or outdated answers about specific L2s like Mantle — mixing up chain IDs, gas tokens, or architecture details. This tool is:
 
-Why no live API call?
+- **Accurate** — local answers come from verified Mantle skill files, not general web knowledge
+- **Current** — live price and TVL data injected on every session
+- **Open-ended** — Claude handles anything the local KB doesn't cover
+- **Free to use** — no login, no wallet, no cost to the user
 
-An earlier version of this project attempted to call the Anthropic API directly from the browser. That approach doesn't work for a public static site for two reasons:
+---
 
+## How I built it
 
-Security: An API key embedded in client-side JavaScript is visible to anyone who opens developer tools, and can be copied and misused.
-Reliability: A public demo that depends on a live paid API is vulnerable to rate limits, cost overruns from spam/abuse, or outages — all things that could make the demo fail during judging.
+**Research phase:**
+Used a Claude Project configured with Mantle's official AI Agent Skills (cloned from `https://github.com/mantle-xyz/mantle-skills`) to research Mantle's architecture. The Skills grounded the research in Mantle's actual documentation rather than general web knowledge.
 
+**Build phase:**
+- Curated a local knowledge base from the skill research (keyword → verified answer)
+- Built a static frontend (HTML/CSS/JS) with a terminal-style chat interface
+- Added live data fetching from CoinGecko and DeFiLlama
+- Set up a Val Town HTTP worker as a secure proxy to the Claude API (keeps API key server-side, not exposed in client JS)
+- Deployed on GitHub Pages
 
-Instead, I chose to ship a curated, reliable demo now, with the answers grounded in real Mantle AI Skills research, and designed the frontend so it can be pointed at a live backend (e.g. a Cloudflare Worker proxying the Claude API, keeping the key server-side) in a future iteration without changing the UI.
+**Architecture decision — why two layers:**
+Known questions get instant local answers (fast, reliable, no API cost). Unknown questions fall through to Claude with live data context (intelligent, open-ended). This means the agent is both fast for common queries and smart for edge cases.
 
-Tech stack
+---
 
+## Tech stack
 
-Frontend: HTML, CSS, vanilla JavaScript
-Hosting: GitHub Pages (free, static)
-Research: Claude Project + Mantle AI Agent Skills
-Planned next step: Cloudflare Worker as a secure backend proxy to Claude API, for open-ended live Q&A beyond the curated set
+- **Frontend:** HTML, CSS, vanilla JavaScript
+- **Hosting:** GitHub Pages
+- **AI proxy:** Val Town HTTP worker (secure Claude API relay)
+- **Live data:** CoinGecko API (MNT price), DeFiLlama API (TVL, protocols)
+- **Research grounding:** Claude Project + Mantle AI Agent Skills v0.1.18
+- **AI model:** claude-sonnet-4-6
 
+---
 
-Live example
+## Live example
 
-Visit the live site, click any of the 12 example questions (or type your own using similar keywords), and watch the assistant "think" and respond:
+Visit the live site and try:
+1. Click any example chip — instant answer from local skills
+2. Type "where can I trade Mantle?" — Claude answers with live price data
+3. Type "what is Fluxion on Mantle?" — Claude answers with ecosystem context
 
 👉 https://nikkibear44.github.io/mantle-research-agent/
 
-Roadmap
+---
 
+## Resources
 
- Cloudflare Worker backend for live, open-ended Q&A
- Expand knowledge base with more Mantle topics (staking, governance, ecosystem apps)
- Source citations linking directly to official Mantle docs
- Copy-to-clipboard buttons for GraphQL/SQL code blocks
+- Mantle AI Skills repo: https://github.com/mantle-xyz/mantle-skills
+- Agent scaffold docs: https://mantle-xyz.github.io/mantle-agent-scaffold/
+- Eval results: https://github.com/mantle-xyz/mantle-skills/blob/main/evals/results/RESULT.md
 
-Other Resource
+---
 
-Mantle skills docs: https://github.com/mantle-xyz/mantle-skills
-scaffold and docs: https://mantle-xyz.github.io/mantle-agent-scaffold/
-
-Built for the Mantle AI Skills Bounty.
+Built for everyone researching Mantle Network · Open source · Free to use
